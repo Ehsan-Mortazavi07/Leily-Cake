@@ -17,9 +17,9 @@ export class PostsService {
     if (checkPost) {
       throw new BadRequestException('this post already exist');
     }
-    if(req.user.isAdmin !== true ){
-      throw new ForbiddenException()
-    }
+    // if(req.user.isAdmin !== true ){
+    //   throw new ForbiddenException()
+    // }
       const newPost = new this.postModel({
         user: req.user._id,
         title: createPostDto.title,
