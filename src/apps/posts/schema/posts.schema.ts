@@ -10,7 +10,7 @@ export class Post {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   user: User;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   title: string;
 
   @Prop({ required: true })
@@ -25,7 +25,7 @@ export class Post {
   @Prop({ required: true })
   price: number;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true  })
   slug: string;
 }
 
