@@ -50,11 +50,10 @@ export class PostsController {
     return { post };
   }
 
-  @Get('/salam')
-  async posts() {
-    const post = await this.postsService.posts();
-    console.log('salamm');
-
-    return post;
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('publish/:id')
+  async publishArticle(@Param('id') id: string) {
+    await this.postsService.publishPost(id);
+    return { message: 'عملیات با موفقیت انجام شد' };
   }
 }

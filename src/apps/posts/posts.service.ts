@@ -103,14 +103,26 @@ export class PostsService {
     return { posts, totalPages, totalItems };
   }
 
-  async posts() {
-    const post = await this.postModel.find({});
-    console.log('salamm');
-
+  async publishPost(_id: string) {
+    let post = await this.postModel.findOne({
+      _id: _id,
+    });
     if (!post) {
-      throw new NotFoundException('chenin posti yaft nashod');
+      throw new NotFoundException('چنین مقاله ای وجود ندارد');
     }
-
-    return post;
+    if (post.isPublish == true) {
+      await post.updateOne({
+        $set: {
+          isPublish: false,
+        },
+      });
+    } else {
+      await post.updateOne({
+        $set: {
+          isPublish: true,
+        },
+      });
+    }
+    return post.isPublish;
   }
 }
