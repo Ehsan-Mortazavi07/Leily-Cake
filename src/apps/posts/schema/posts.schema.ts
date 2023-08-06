@@ -6,7 +6,6 @@ export type PostDocument = mongoose.HydratedDocument<Post>;
 
 @Schema({ timestamps: true })
 export class Post {
- 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   user: User;
 
@@ -25,8 +24,11 @@ export class Post {
   @Prop({ required: true })
   price: number;
 
-  @Prop({ required: true, unique: true  })
+  @Prop({ required: true, unique: true })
   slug: string;
+
+  @Prop({ default: false })
+  isPublish: boolean;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

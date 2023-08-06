@@ -2,7 +2,6 @@ import {
   Injectable,
   Req,
   BadRequestException,
-  UnauthorizedException,
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
@@ -23,7 +22,7 @@ export class PostsService {
     if (!post) {
       throw new NotFoundException('post not found');
     }
-    return  post ;
+    return { post };
   }
 
   async createPost(createPostDto: CreatePostDto, @Req() req) {
@@ -84,4 +83,36 @@ export class PostsService {
 
     return post;
   }
+
+  async showAll(page: string, limit: string) {
+    const pageQuery = parseInt(page) || 1;
+    const perPage = parseInt(limit) || 10;
+    const totalItems: any = (await this.postModel.find({})).length;
+    const totalPages = Math.ceil(totalItems / perPage);
+
+    const posts = await this.postModel
+      .find({})
+      .skip((pageQuery - 1) * perPage)
+      .limit(perPage)
+      .sort({ createdAt: -1 });
+
+    if (!posts) {
+      throw new NotFoundException('هیچ پستی سافت ند');
+    }
+
+    return { posts, totalPages, totalItems };
+  }
+
+  async posts(){
+    const post = await this.postModel.find({})
+    console.log('salamm');
+    
+    if(!post){
+      throw new NotFoundException('chenin posti yaft nashod')
+    }
+
+    return post
+  }
+
+
 }

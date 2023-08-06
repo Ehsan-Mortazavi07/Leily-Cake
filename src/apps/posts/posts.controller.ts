@@ -7,6 +7,7 @@ import {
   Put,
   Param,
   Get,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dtos/create-post.dto';
@@ -20,7 +21,7 @@ export class PostsController {
 
   @Get('/:slug')
   async showOne(@Param('slug') slug: string) {
-    const  post  = await this.postsService.showOne(slug);
+    const post = await this.postsService.showOne(slug);
     return post;
   }
 
@@ -41,5 +42,19 @@ export class PostsController {
   ) {
     const post = await this.postsService.editPost(req, EditPostDto, slug);
     return { post };
+  }
+
+  @Get('/all')
+  async showAll(@Query('page') page, @Query('limit') limit) {
+    const posts = await this.postsService.showAll(page, limit);
+    return { posts };
+  }
+
+  @Get('/salam')
+  async posts(){
+    const post = await this.postsService.posts()
+    console.log('salamm');
+
+    return post
   }
 }
