@@ -52,7 +52,7 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('publish/:id')
-  async publishArticle(@Param('id') id: string) {
+  async publishPost(@Param('id') id: string) {
     await this.postsService.publishPost(id);
     return { message: 'عملیات با موفقیت انجام شد' };
   }
