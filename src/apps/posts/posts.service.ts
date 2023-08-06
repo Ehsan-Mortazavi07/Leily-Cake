@@ -103,16 +103,14 @@ export class PostsService {
     return { posts, totalPages, totalItems };
   }
 
-  async posts(){
-    const post = await this.postModel.find({})
+  async posts() {
+    const post = await this.postModel.find({});
     console.log('salamm');
-    
-    if(!post){
-      throw new NotFoundException('chenin posti yaft nashod')
+
+    if (!post) {
+      throw new NotFoundException('chenin posti yaft nashod');
     }
 
-    return post
+    return post;
   }
-
-
 }

@@ -19,6 +19,12 @@ import { EditPosteDto } from './dtos/edit-post.dto';
 export class PostsController {
   constructor(private postsService: PostsService) {}
 
+  @Get('/all')
+  async showAll(@Query('page') page, @Query('limit') limit) {
+    const posts = await this.postsService.showAll(page, limit);
+    return posts;
+  }
+
   @Get('/:slug')
   async showOne(@Param('slug') slug: string) {
     const post = await this.postsService.showOne(slug);
@@ -44,17 +50,11 @@ export class PostsController {
     return { post };
   }
 
-  @Get('/all')
-  async showAll(@Query('page') page, @Query('limit') limit) {
-    const posts = await this.postsService.showAll(page, limit);
-    return { posts };
-  }
-
   @Get('/salam')
-  async posts(){
-    const post = await this.postsService.posts()
+  async posts() {
+    const post = await this.postsService.posts();
     console.log('salamm');
 
-    return post
+    return post;
   }
 }
