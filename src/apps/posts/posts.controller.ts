@@ -25,12 +25,6 @@ export class PostsController {
     return posts;
   }
 
-  @Get('/:slug')
-  async showOne(@Param('slug') slug: string) {
-    const post = await this.postsService.showOne(slug);
-    return post;
-  }
-
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create')
   async createPost(@Body() createPostDto: CreatePostDto, @Req() req) {
@@ -55,5 +49,12 @@ export class PostsController {
   async publishPost(@Param('id') id: string) {
     await this.postsService.publishPost(id);
     return { message: 'عملیات با موفقیت انجام شد' };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/:slug')
+  async showOne(@Param('slug') slug: string, @Req() req) {
+    const post = await this.postsService.showOne(slug, req);
+    return post;
   }
 }

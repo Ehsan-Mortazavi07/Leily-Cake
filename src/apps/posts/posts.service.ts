@@ -10,15 +10,29 @@ import { Post, PostDocument } from './schema/posts.schema';
 import { Model } from 'mongoose';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { EditPosteDto } from './dtos/edit-post.dto';
+import { BookmarkDocument, Bookmark } from '../bookmark/schema/bookmark.schema';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectModel(Post.name) private readonly postModel: Model<PostDocument>,
+    @InjectModel(Bookmark.name)
+    private readonly bookmarkModel: Model<BookmarkDocument>,
   ) {}
 
-  async showOne(slug: string) {
-    const post = await this.postModel.findOne({ slug: slug });
+  async showOne(slug: string, @Req() req) {
+    const foundPost = await this.postModel.findOne({ slug: slug });
+
+    let post: any = { ...foundPost };
+    post.isBookmarked = false;
+
+    if (req.user) {
+      const bookmark = await this.bookmarkModel.findOne({
+        post: post._id,
+        user: req.user._id,
+      });
+    }
+
     if (!post) {
       throw new NotFoundException('post not found');
     }
@@ -94,7 +108,7 @@ export class PostsService {
       .find({})
       .skip((pageQuery - 1) * perPage)
       .limit(perPage)
-      .sort({ createdAt: -1 });
+      .sort({ updatedAt: -1 });
 
     if (!posts) {
       throw new NotFoundException('هیچ پستی سافت ند');
