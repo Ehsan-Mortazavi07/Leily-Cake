@@ -9,10 +9,7 @@ export class CreatePostDto {
 
   @IsString()
   description: string;
-
-  @IsString()
-  image: string;
-
+  
   @IsString()
   price: string;
 

@@ -39,7 +39,7 @@ export class PostsService {
     return { post };
   }
 
-  async createPost(createPostDto: CreatePostDto, @Req() req) {
+  async createPost(createPostDto: CreatePostDto, @Req() req,image: Express.Multer.File,) {
     const checkPost = await this.postModel.findOne({
       slug: createPostDto.slug,
     });
@@ -52,7 +52,7 @@ export class PostsService {
       shortDescription: createPostDto.shortDescription,
       description: createPostDto.description,
       slug: createPostDto.slug,
-      image: createPostDto.image,
+      image: image.path,
       price: parseInt(createPostDto.price),
     });
     await newPost.save();
